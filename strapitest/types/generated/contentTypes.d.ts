@@ -430,6 +430,37 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAppApp extends Struct.CollectionTypeSchema {
+  collectionName: 'apps';
+  info: {
+    displayName: 'app';
+    pluralName: 'apps';
+    singularName: 'app';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    admin_users: Schema.Attribute.Relation<'oneToMany', 'admin::user'>;
+    code_css: Schema.Attribute.String;
+    code_html: Schema.Attribute.String;
+    code_js: Schema.Attribute.String;
+    color: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    keyword: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::app.app'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    style: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -940,6 +971,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::app.app': ApiAppApp;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
