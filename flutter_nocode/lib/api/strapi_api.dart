@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class StrapiApi {
   final Dio _dio = Dio(
     BaseOptions(
-      baseUrl: 'http://localhost:1337/api', // ← StrapiのAPI URL
+      baseUrl: 'http://192.168.4.168:1337/api', // ← StrapiのAPI URL
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 5),
     ),

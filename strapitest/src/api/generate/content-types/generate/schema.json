@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "generates",
+  "info": {
+    "singularName": "generate",
+    "pluralName": "generates",
+    "displayName": "generate"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "keyword": {
+      "type": "string",
+      "required": true
+    },
+    "color": {
+      "type": "string",
+      "default": "白"
+    },
+    "style": {
+      "type": "string",
+      "default": "シンプル"
+    },
+    "code_html": {
+      "type": "text"
+    },
+    "code_css": {
+      "type": "text"
+    },
+    "code_js": {
+      "type": "text"
+    }
+  }
+}
