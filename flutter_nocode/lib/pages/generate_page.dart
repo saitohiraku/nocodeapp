@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../api/strapi_service.dart';
+import 'results_page.dart';  // ← 追加：結果画面を使う
 
 class GeneratePage extends StatefulWidget {
   const GeneratePage({Key? key}) : super(key: key);
@@ -16,38 +17,35 @@ class _GeneratePageState extends State<GeneratePage> {
   String selectedStyle = 'シンプル';
   bool isLoading = false;
 
-  // プリセットボタン
   final templates = ['電卓', 'カレンダー', '時計'];
-
-  // カラープリセット
   final colors = ['赤', '青', '緑'];
 
   Future<void> _generateApp(String keyword) async {
     setState(() => isLoading = true);
+
     try {
       final result = await _strapi.generateApp(
         keyword: keyword,
         color: selectedColor,
         style: selectedStyle,
       );
-      print('✅ 生成成功: ${result['message']}');
 
-      // 確認用にダイアログで結果表示
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text('アプリ生成完了'),
-          content: Text(result.toString()),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            )
-          ],
+      print("🔥 生成結果: $result");
+
+      // ----------- ★ 追加：ここで画面遷移してアプリを表示する ----------- //
+      final html = result["data"]?["result"] ?? "<h1>表示データなし</h1>";
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ResultsPage(htmlCode: html),
         ),
       );
+      // ------------------------------------------------------------- //
     } catch (e) {
       print('❌ 生成エラー: $e');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("エラー: $e")));
     } finally {
       setState(() => isLoading = false);
     }
@@ -65,7 +63,6 @@ class _GeneratePageState extends State<GeneratePage> {
             const Text('キーワードを入力', style: TextStyle(fontSize: 18)),
             const SizedBox(height: 8),
 
-            // 入力フィールド
             TextField(
               controller: _controller,
               decoration: InputDecoration(
@@ -84,7 +81,6 @@ class _GeneratePageState extends State<GeneratePage> {
 
             const SizedBox(height: 16),
 
-            // テンプレートボタン群
             Wrap(
               spacing: 8,
               children: templates
@@ -98,7 +94,6 @@ class _GeneratePageState extends State<GeneratePage> {
 
             const SizedBox(height: 24),
 
-            // カラーテーマ選択
             const Text('カラーテーマ', style: TextStyle(fontSize: 16)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -124,7 +119,6 @@ class _GeneratePageState extends State<GeneratePage> {
 
             const SizedBox(height: 24),
 
-            // 柄（スタイル）選択
             const Text('デザインスタイル', style: TextStyle(fontSize: 16)),
             Wrap(
               spacing: 12,
@@ -139,7 +133,6 @@ class _GeneratePageState extends State<GeneratePage> {
 
             const Spacer(),
 
-            // ローディング or 生成ボタン
             Center(
               child: isLoading
                   ? const CircularProgressIndicator()

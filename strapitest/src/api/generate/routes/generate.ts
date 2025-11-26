@@ -3,7 +3,7 @@ module.exports = {
         {
             method: "POST",
             path: "/generate",
-            handler: "generate.createApp",
+            handler: "generate.generateApp",
             config: {
                 auth: false,
             },
