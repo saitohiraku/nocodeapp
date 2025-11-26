@@ -4,8 +4,8 @@ class StrapiService {
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: 'http://localhost:1337/api', // ← 自分のローカルIPに変更！
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: const Duration(seconds: 20),
+      receiveTimeout: const Duration(seconds: 60),
     ),
   );
 
